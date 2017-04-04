@@ -1,0 +1,42 @@
+
+#================================
+#功能模板
+#================================
+
+global !p
+import string
+import re
+def makeTab(input):
+	val1 = input.strip()
+	val1 = re.sub('\s+',' | ', val1)
+	val1 = '| ' + val1 + ' |'
+	return val1
+
+endglobal
+
+
+#line = newlist[0]
+#line = re.sub('[^ \s |]','-',line)
+#newlist.insert(1, line)
+
+#================================
+#功能模板
+#================================
+snippet tabh "表头" bw
+`!p
+linelist = snip.v.text.strip().split('\n')
+newlist = list( map(makeTab, linelist) )
+line = newlist[0]
+line = re.sub('[^ \s |]','-',line)
+newlist.insert(1, line)
+snip.rv = "\n".join(newlist)
+`
+endsnippet
+
+snippet tab "表" bw
+`!p
+linelist = snip.v.text.strip().split('\n')
+newlist = map(makeTab, linelist)
+snip.rv = "\n".join(newlist)
+`
+endsnippet
