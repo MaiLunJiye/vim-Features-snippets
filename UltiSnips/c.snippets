@@ -1,0 +1,46 @@
+global !p
+import string
+import re
+
+def Paramenterformat(input):
+	return " *\t\t" + input.strip() + "\t:"
+
+def splittoList(input):
+	input = re.sub('\r|\n','',input)
+	pas = input.split(",")
+	return pas
+endglobal
+
+
+snippet /*f	"visual-mod function command" bw
+`!p
+vtext = re.sub("\r|\n",' ',snip.v.text)
+match = re.search('(\S*?)\s*?\((.*)\)',vtext)
+retList = ["/**"]
+if match:
+	retList.append( " * " + match.group(1).strip() )
+	if re.match("\S+?", match.group(2)):
+		retList.append( " * @Parameter:" )
+		retList.extend( list(map( Paramenterformat, splittoList( match.group(2) ) ) ))
+	retList.append( " * @return:" )
+	retList.append( " */" )
+	retList.append(snip.v.text.strip())
+
+snip.rv += "\n".join( retList )
+`
+endsnippet
+
+
+
+snippet /*d "function command" "re.search('(\S*?)\s*?\((.*)\)', snip.buffer[snip.line+1])"	be
+`!p
+retList = ["/**"]
+retList.append( " * " + snip.context.group(1).strip() )
+if re.match("\S+?", snip.context.group(2)):
+	retList.append( " * @Parameter:" )
+	retList.extend( list(map( Paramenterformat, splittoList( snip.context.group(2) ) ) ))
+retList.append( " * @return:" )
+retList.append( " */" )
+snip.rv += "\n".join( retList )
+`
+endsnippet
