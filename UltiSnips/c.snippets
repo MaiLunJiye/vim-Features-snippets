@@ -13,34 +13,35 @@ endglobal
 
 
 snippet /*f	"visual-mod function command" bw
+/**
 `!p
 vtext = re.sub("\r|\n",' ',snip.v.text)
 match = re.search('(\S*?)\s*?\((.*)\)',vtext)
-retList = ["/**"]
+retList = []
 if match:
 	retList.append( " * " + match.group(1).strip() )
 	if re.match("\S+?", match.group(2)):
 		retList.append( " * @Parameter:" )
 		retList.extend( list(map( Paramenterformat, splittoList( match.group(2) ) ) ))
 	retList.append( " * @return:" )
-	retList.append( " */" )
-	retList.append(snip.v.text.strip())
-
 snip.rv += "\n".join( retList )
 `
+ */$1
+`!p snip.rv = snip.v.text`
 endsnippet
 
 
 
 snippet /*d "function command" "re.search('(\S*?)\s*?\((.*)\)', snip.buffer[snip.line+1])"	be
+/**
 `!p
-retList = ["/**"]
-retList.append( " * " + snip.context.group(1).strip() )
+retList = []
+retList.append( "* " + snip.context.group(1).strip() )
 if re.match("\S+?", snip.context.group(2)):
 	retList.append( " * @Parameter:" )
 	retList.extend( list(map( Paramenterformat, splittoList( snip.context.group(2) ) ) ))
 retList.append( " * @return:" )
-retList.append( " */" )
-snip.rv += "\n".join( retList )
+snip.rv = "\n".join( retList )
 `
+ */
 endsnippet
